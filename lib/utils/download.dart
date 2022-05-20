@@ -3,8 +3,7 @@ import 'package:iot_attendance_system/utils/globals.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void downLoadExcel() {
-  var uri = Uri.parse("$BASE_URL${Endpoint.projects}/export");
+  var uri = Uri.parse("$BASE_URL${Endpoint.sessions}/export");
   uri = uri.replace();
-
   launchUrl(uri);
 }

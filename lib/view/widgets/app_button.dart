@@ -9,9 +9,11 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final double? width;
+  final double? height;
+
   final Widget? icon;
   final Color? textColor;
-  final Color? backroundColor;
+  final Color? backgroundColor;
   final ButtonType buttonType;
   final bool isLoading;
 
@@ -21,8 +23,9 @@ class AppButton extends StatelessWidget {
       required this.text,
       this.buttonType = ButtonType.primary,
       this.width,
+      this.height = 50,
       this.textColor,
-      this.backroundColor,
+      this.backgroundColor,
       this.isLoading = false,
       this.icon})
       : super(key: key);
@@ -32,10 +35,10 @@ class AppButton extends StatelessWidget {
     final isPrimary = buttonType == ButtonType.primary;
     final defaultTextColor = isPrimary
         ? Theme.of(context).colorScheme.surface
-        : backroundColor ?? Theme.of(context).colorScheme.primary;
+        : backgroundColor ?? Theme.of(context).colorScheme.primary;
 
     final buttonBgColor = isPrimary
-        ? backroundColor ?? Theme.of(context).colorScheme.primary
+        ? backgroundColor ?? Theme.of(context).colorScheme.primary
         : Colors.transparent;
     return ElevatedButton(
         onPressed: isLoading ? null : onPressed,
@@ -48,7 +51,7 @@ class AppButton extends StatelessWidget {
                     ? BorderSide.none
                     : BorderSide(
                         width: 2,
-                        color: backroundColor ??
+                        color: backgroundColor ??
                             Theme.of(context).colorScheme.primary,
                       ),
                 borderRadius: BorderRadius.circular(5))),
@@ -58,7 +61,7 @@ class AppButton extends StatelessWidget {
             icon ?? const SizedBox.shrink(),
             Container(
               width: width,
-              height: 50,
+              height: height,
               padding: const EdgeInsets.all(3),
               alignment: Alignment.center,
               child: Text(

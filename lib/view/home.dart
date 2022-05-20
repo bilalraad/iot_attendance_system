@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iot_attendance_system/view/session/sessions_list.dart';
 
 class MyHomeScreen extends StatelessWidget {
   const MyHomeScreen({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class MyHomeScreen extends StatelessWidget {
           const Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              // child: ProjectsList(),
+              child: SessionsList(),
             ),
           ),
           Container(

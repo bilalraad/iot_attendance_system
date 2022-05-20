@@ -1,8 +1,15 @@
 class Strings {
-  static const addProject = 'إضافة مشروع';
-  static const addProjects = 'إضافة عنطريق ملف اكسل';
-  static const add = 'إضافة';
-  static const save = 'حفظ';
+  static const createSession = 'Create Session';
+  static const add = 'Add';
+  static const save = 'Save';
+  static const sessions = 'Sessions';
+  static const name = 'Name';
+  static const date = 'Date';
+  static const actions = 'Actions';
+  static const participants = 'Participants';
+  static const retry = 'Retry';
+  static const delete = 'Delete';
+
   static const logIn = 'تسجيل الدخول';
   static const logOut = 'تسجيل الخروج';
   static const projectName = 'اسم المشروع';
@@ -49,7 +56,6 @@ class Strings {
   static const restore = 'استعادة';
   static const downloadfiles = 'تحميل الملفات';
   static const downloadSQL = 'تحميل قاعدة البيانات';
-  static const delete = 'حذف';
   static const ifYouAdminPleaseConfrimIdentity =
       'اذا كنت ادمن الرجاء اثبات هويتك عن طريق التسجيل';
   static const loggedInSuccess = 'تم تسجيل الدخول بنجاح';
@@ -90,24 +96,23 @@ class Strings {
   static const downloadData = 'تحميل البيانات';
   static const noProjects = 'لا يوجد مشاريع';
   static const changeFilter = "تغيير الفلتر";
-  static const retry = 'اعادة المحاولة';
   static const keywordHint = 'مثال: تطبيق هاتف';
   static const filterReset = 'اعادة';
   static const cancel = "الغاء";
 
   static String count(String? count) {
-    return "العدد: ${count ?? 0}";
+    return "Count: ${count ?? 0}";
   }
 
   static String fieldMustEqualError(String? valueName) {
-    return 'يجب ان يكون الحقل مساويا للحقل $valueName';
+    return 'This field must be equal to $valueName';
   }
 
   static String minLengthError(int? minLength) {
-    return 'يجب ان يتكون النص من $minLength رموز على الاقل';
+    return 'The text must consist of a minimum of $minLength characters';
   }
 
   static String maxLengthError(int? maxLength) {
-    return 'يجب ان يتكون النص من $maxLength رموز على الاكثر';
+    return 'The text must consist of a maximum of $maxLength characters';
   }
 }

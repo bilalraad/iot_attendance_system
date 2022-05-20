@@ -19,7 +19,7 @@ class AppErrorWidget extends StatelessWidget {
           Text(errorMessage),
           const SizedBox(height: 10),
           AppButton(
-            backroundColor: Colors.black,
+            backgroundColor: Colors.black,
             onPressed: () => onRefresh(),
             text: Strings.retry,
           )
