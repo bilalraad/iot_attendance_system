@@ -34,14 +34,16 @@ class AppBackButton extends StatelessWidget {
           alignment: Alignment.topRight,
           child: InkWell(
             onTap: () => AutoRouter.of(context).replaceNamed('/'),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.arrow_back_ios,
-                    color: Theme.of(context).primaryColor),
-                Text(Strings.back,
-                    style: TextStyle(color: Theme.of(context).primaryColor)),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(Icons.arrow_back_ios,
+                      color: Theme.of(context).primaryColor),
+                  Text(Strings.back,
+                      style: TextStyle(color: Theme.of(context).primaryColor)),
+                ],
+              ),
             ),
           ),
         ),

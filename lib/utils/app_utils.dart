@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String getFileSize(int bytes, int decimals) {
   if (bytes <= 0) return "0 B";
@@ -27,4 +28,13 @@ MaterialColor buildMaterialColor(Color color) {
     );
   }
   return MaterialColor(color.value, swatch);
+}
+
+extension DateTimeExtensions on DateTime? {
+  String? format() {
+    if (this != null) {
+      return DateFormat.yMMMMEEEEd().format(this!);
+    }
+    return null;
+  }
 }

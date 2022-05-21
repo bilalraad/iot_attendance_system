@@ -9,11 +9,17 @@ class Strings {
   static const participants = 'Participants';
   static const retry = 'Retry';
   static const delete = 'Delete';
+  static const dropFilesHere = 'Drop Files Here';
+  static const browseFiles = 'Browse Files';
+  static const fileNotSupported = 'File Not Supported';
+  static const skipAndNext = 'Skip And Next';
+  static const next = 'Next';
+  static const back = 'Back';
+  static const selectDate = "Select Date";
 
   static const logIn = 'تسجيل الدخول';
   static const logOut = 'تسجيل الخروج';
   static const projectName = 'اسم المشروع';
-  static const graduationYear = 'سنة التخرج';
   static const studentName = 'اسم الطالب';
   static const supervisorName = 'اسم المشرف';
   static const level = 'المستوى الجامعي';
@@ -21,12 +27,10 @@ class Strings {
   static const studentPhoneNumber = 'رقم هاتف الطالب';
   static const pdf = 'PDF';
   static const doc = 'DOC';
-  static const selectYear = "اختر السنة";
   static const abstract = 'نبذة مختصرة';
   static const optionalWithBrackets = ' ) اختياري ( ';
   static const pleaseFillProjectInfo =
       'الرجاء ملئ الحقول بالمعلومات الظرورية والتاكد منها قبل الاضافة';
-  static const dropFilesHere = 'قم بأسقاط الملفات هنا';
   static const operationCanceled = 'تم الغاء العملية';
   static const unKnownError = 'حدث خطأ غير متوقع';
   static const connectionFailed = 'فشل في الاتصال الرجاء المحاولة لاحقا';
@@ -81,7 +85,6 @@ class Strings {
   static const pleaseUploadFile = 'الرجاء رفع الملف اولا';
   static const projectsUploadSuccess = 'تم رفع المشاريع بنجاح';
   static const projectEditeSuccess = 'تم تعديل المشروع بنجاح';
-  static const browseFiles = 'تصفح الملفات';
   static const noKeywords = 'لا يوجد كلمات دالة';
   static const noAbstract = 'لم يتم اضافة نبذة مختصرة';
   static const noReport = 'لم يتم رفع تقرير لهذا المشروع';
@@ -89,7 +92,6 @@ class Strings {
   static const editProject = 'تعديل المشروع';
   static const deleteProject = 'حذف المشروع';
   static const deleteProjectSuccess = 'تم حذف المشروع بنجاح';
-  static const back = 'رجوع';
   static const showDetails = 'عرض التفاصيل';
   static const loading = 'تحميل...';
   static const filtering = 'فلترة';

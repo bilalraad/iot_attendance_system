@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
+import 'package:iot_attendance_system/utils/app_utils.dart';
 
-class AppYearPicker extends StatelessWidget {
-  const AppYearPicker({
+class AppDatePicker extends StatelessWidget {
+  const AppDatePicker({
     Key? key,
     required this.selectedDate,
     required this.onYearSelected,
@@ -17,19 +18,20 @@ class AppYearPicker extends StatelessWidget {
       onTap: () {
         showDatePicker(
                 context: context,
-                initialDatePickerMode: DatePickerMode.year,
                 initialDate: selectedDate ?? DateTime.now(),
                 firstDate: DateTime(1800),
-                lastDate: DateTime.now())
+                lastDate: DateTime(DateTime.now().year + 3))
             .then(onYearSelected);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        width: 150,
+        width: 300,
+        height: 80,
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).dividerColor),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.calendar_month_rounded,
@@ -38,10 +40,11 @@ class AppYearPicker extends StatelessWidget {
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(Strings.graduationYear),
+                const Text(Strings.date),
                 Text(
-                  selectedDate?.year.toString() ?? Strings.graduationYear,
+                  selectedDate.format() ?? Strings.selectDate,
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1
