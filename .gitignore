@@ -1,6 +1,8 @@
 # Miscellaneous
 *.class
 *.log
+*.freezed.dart
+*.g.dart
 *.pyc
 *.swp
 .DS_Store
