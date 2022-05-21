@@ -1,5 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iot_attendance_system/app_router.gr.dart';
+import 'package:iot_attendance_system/blocs/create_session/create_session_cubit.dart';
+import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/models/app_file.dart';
+import 'package:iot_attendance_system/models/create_session.dart';
 import 'package:iot_attendance_system/utils/context_extensions.dart';
 import 'package:iot_attendance_system/utils/enums.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
@@ -18,15 +24,21 @@ class PickExcelScreen extends StatefulWidget {
 }
 
 class _PickExcelScreenState extends State<PickExcelScreen> {
-  AppFile? pickedFile;
-
   final _formKey = GlobalKey<FormState>();
   final _sessionNameC = TextEditingController();
   DateTime? _date;
+  AppFile? _pickedFile;
 
   final pageC = PageController(initialPage: 0);
   final pageTransDuration = const Duration(milliseconds: 300);
   final pageCurve = Curves.ease;
+  late CreateSessionCubit _createSessionC;
+
+  @override
+  void initState() {
+    _createSessionC = BlocProvider.of<CreateSessionCubit>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +47,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
         child: AppHeader(
           child: PageView(
             controller: pageC,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Column(
                 children: [
@@ -43,10 +56,10 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   FilePickerWidget(
-                      pickedFiles: pickedFile != null ? [pickedFile!] : [],
+                      pickedFiles: _pickedFile != null ? [_pickedFile!] : [],
                       onFilesPicked: (f) {
                         setState(() {
-                          pickedFile = f;
+                          _pickedFile = f;
                           _sessionNameC.text =
                               extractSessionNameFromFileName(f.name) ?? '';
                           _date = extractSessionDateFromFileName(f.name);
@@ -56,7 +69,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                       fileTypes: const [PickerFileTypes.xlsx],
                       onFileRemoved: (_) {
                         setState(() {
-                          pickedFile = null;
+                          _pickedFile = null;
                           _sessionNameC.text = '';
                           _date = null;
                         });
@@ -65,7 +78,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppButton(
-                        onPressed: pickedFile != null
+                        onPressed: _pickedFile != null
                             ? null
                             : () {
                                 pageC.nextPage(
@@ -77,7 +90,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                       ),
                       const SizedBox(width: 10),
                       AppButton(
-                        onPressed: pickedFile != null
+                        onPressed: _pickedFile != null
                             ? () {
                                 pageC.nextPage(
                                     duration: pageTransDuration,
@@ -95,6 +108,10 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
+                    Text(
+                      'Fill the remaining info',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                     AppTextField(
                       lableText: 'Session Name',
                       controller: _sessionNameC,
@@ -119,15 +136,35 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                           buttonType: ButtonType.secondary,
                         ),
                         const SizedBox(width: 10),
-                        AppButton(
-                          onPressed: () {
-                            if (!_formKey.currentState!.validate()) return;
-                            if (_date == null) {
-                              context.showSnackBar('Please select session date',
-                                  isError: true);
-                            }
+                        BlocBuilder<CreateSessionCubit, BlocsState>(
+                          builder: (context, state) {
+                            return AppButton(
+                              isLoading: state.maybeWhen(
+                                  orElse: () => false, loading: () => true),
+                              onPressed: () async {
+                                if (!_formKey.currentState!.validate()) return;
+                                if (_date == null) {
+                                  context.showSnackBar(
+                                      'Please select session date',
+                                      isError: true);
+                                }
+
+                                await _createSessionC.submitSession(
+                                    CreateSession(
+                                        title: _sessionNameC.text, date: _date),
+                                    _pickedFile);
+                                _createSessionC.state.whenOrNull(
+                                  data: (_) {
+                                    context.showSnackBar(
+                                        'Session Created Successfully');
+                                    AutoRouter.of(context)
+                                        .replace(const MyHomeRoute());
+                                  },
+                                );
+                              },
+                              text: Strings.next,
+                            );
                           },
-                          text: Strings.next,
                         ),
                       ],
                     )

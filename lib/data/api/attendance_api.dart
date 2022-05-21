@@ -1,9 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/data/api/dio_client.dart';
 import 'package:iot_attendance_system/data/api/helper/endpoints.dart';
+import 'package:iot_attendance_system/data/api/helper/map_utils.dart';
 import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
 // import 'package:iot_attendance_system/data/api/helper/token.dart';
 import 'package:iot_attendance_system/data/shared_pref_helper.dart';
+import 'package:iot_attendance_system/models/app_file.dart';
+import 'package:iot_attendance_system/models/create_session.dart';
 import 'package:iot_attendance_system/models/session.dart';
 import 'package:iot_attendance_system/utils/app_error.dart';
 
@@ -58,14 +62,18 @@ class AttendanceApi {
   //   await _dioClient.post(Endpoint.importProjects, data: formData);
   // }
 
-  // Future<void> addSession({
-  //   required AddProject newProject,
-  //   required List<AppFile> files,
-  // }) async {
-  //   final response = await _dioClient.post(Endpoint.projects,
-  //       data: newProject.toJson().cleanUpValues());
-  //   await uploadFiles(files, response.data['id'].toString());
-  // }
+  Future<void> addSession({
+    required CreateSession newSession,
+    required AppFile? excel,
+  }) async {
+    final formData = FormData.fromMap(newSession.toJson().cleanUpValues());
+    if (excel != null) {
+      formData.files.add(MapEntry(
+          'file', MultipartFile.fromBytes(excel.bytes, filename: excel.name)));
+    }
+
+    await _dioClient.post(Endpoint.sessions, data: formData);
+  }
 
   // Future<void> editSession(
   //     {required EditProject project, required String projectId}) async {

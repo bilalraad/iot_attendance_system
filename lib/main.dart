@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iot_attendance_system/app_router.gr.dart';
+import 'package:iot_attendance_system/blocs/create_session/create_session_cubit.dart';
 import 'package:iot_attendance_system/blocs/sessions_bloc/sessions_bloc.dart';
 import 'package:iot_attendance_system/data/api/dio_client.dart';
 import 'package:iot_attendance_system/data/api/helper/network.dart';
@@ -44,13 +45,13 @@ Future<Widget> configureInjections(Widget child) async {
   var sharedPrefHelper = SharedPreferenceHelper(sharedPreference);
   var dio = Network.provideDio(sharedPrefHelper);
   var dioClient = DioClient(dio);
-  var projectsRepo = AttendanceApi(dioClient, sharedPrefHelper);
+  var attendanceRepo = AttendanceApi(dioClient, sharedPrefHelper);
   return MultiBlocProvider(
     providers: [
       // BlocProvider(create: (_) => filter),
       BlocProvider(
-          lazy: false, create: (context) => SessionsBloc(projectsRepo)),
-      // BlocProvider(create: (_) => AddProjectBloc(projectsRepo)),
+          lazy: false, create: (context) => SessionsBloc(attendanceRepo)),
+      BlocProvider(create: (_) => CreateSessionCubit(attendanceRepo)),
     ],
     child: child,
   );

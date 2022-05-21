@@ -14,16 +14,17 @@ class SessionsBloc
   static SessionsBloc of(BuildContext context, {bool listen = false}) =>
       BlocProvider.of<SessionsBloc>(context, listen: listen);
 
-  SessionsBloc(AttendanceApi projectsRepo) : super(const BlocsState.initial()) {
+  SessionsBloc(AttendanceApi attendanceRepo)
+      : super(const BlocsState.initial()) {
     on<_Started>((event, emit) async {
-      await apiCallsWrapper<ResWithCount<Session>>(projectsRepo.getSessions())
+      await apiCallsWrapper<ResWithCount<Session>>(attendanceRepo.getSessions())
           .listen((event) => emit(event))
           .asFuture();
     });
 
     on<_LoadSessions>((event, emit) async {
       await apiCallsWrapper<ResWithCount<Session>>(
-              projectsRepo.getSessions(skip: event.skip))
+              attendanceRepo.getSessions(skip: event.skip))
           .listen((event) => emit(event))
           .asFuture();
     });
