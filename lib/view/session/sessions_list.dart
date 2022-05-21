@@ -48,62 +48,58 @@ class _SessionsListState extends State<SessionsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          Expanded(
-            child: BlocBuilder<SessionsBloc, BlocsState<ResWithCount<Session>>>(
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  child: SizedBox(
-                    child: state.whenOrNull(
-                        data: (res) {
-                          return PaginatedDataTable(
-                            columns: const [
-                              DataColumn(label: Text(Strings.name)),
-                              DataColumn(label: Text(Strings.date)),
-                              DataColumn(label: Text(Strings.participants)),
-                              DataColumn(label: Text(Strings.actions)),
-                            ],
-                            actions: [
-                              AppButton(
-                                  onPressed: () {
-                                    AutoRouter.of(context)
-                                        .push(const PickExcelRoute());
-                                  },
-                                  text: Strings.createSession)
-                            ],
-                            header: const Text(Strings.sessions),
-                            source: SessionsData(res.results, res.count),
-                            rowsPerPage: res.results.length,
-                            columnSpacing: 100,
-                            showCheckboxColumn: false,
-                            onPageChanged: (page) {
-                              final nextPageKey = (res.results.length) + limit;
-                              final isLastPage = nextPageKey >= res.count;
-                              _nextPageKey = nextPageKey;
-                              if (isLastPage) return;
-                              _sessionsB
-                                  .add(SessionsEvent.loadSessions(nextPageKey));
-                            },
-                          );
-                        },
-                        loading: () =>
-                            const CircularProgressIndicator.adaptive(),
-                        failure: (e) => AppErrorWidget(
-                            onRefresh: () {
-                              _sessionsB.add(
-                                  SessionsEvent.loadSessions(_nextPageKey));
-                            },
-                            errorMessage: e.readableMessage)),
-                  ),
-                );
-              },
-            ),
+    return BlocBuilder<SessionsBloc, BlocsState<ResWithCount<Session>>>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            child: state.whenOrNull(
+                data: (res) {
+                  return PaginatedDataTable(
+                    columns: const [
+                      DataColumn(label: Text(Strings.name)),
+                      DataColumn(label: Text(Strings.date)),
+                      DataColumn(label: Text(Strings.participants)),
+                      DataColumn(label: Text(Strings.actions)),
+                    ],
+                    actions: [
+                      AppButton(
+                          onPressed: () {
+                            AutoRouter.of(context).push(const PickExcelRoute());
+                          },
+                          icon: const Icon(Icons.add),
+                          text: Strings.createSession)
+                    ],
+                    header: const Text(Strings.sessions),
+                    source: SessionsData(
+                      res.results,
+                      res.count,
+                      onSessionDelete: (id) =>
+                          _sessionsB.add(SessionsEvent.deleteSession(id)),
+                    ),
+                    rowsPerPage: res.count > 0 ? res.results.length : 1,
+                    columnSpacing: MediaQuery.of(context).size.width / 7.5,
+                    dataRowHeight: 70,
+                    showCheckboxColumn: false,
+                    onPageChanged: (page) {
+                      final nextPageKey = (res.results.length) + limit;
+                      final isLastPage = nextPageKey >= res.count;
+                      _nextPageKey = nextPageKey;
+                      if (isLastPage) return;
+                      _sessionsB.add(SessionsEvent.loadSessions(nextPageKey));
+                    },
+                  );
+                },
+                loading: () =>
+                    const Center(child: CircularProgressIndicator.adaptive()),
+                failure: (e) => AppErrorWidget(
+                    onRefresh: () {
+                      _sessionsB.add(SessionsEvent.loadSessions(_nextPageKey));
+                    },
+                    errorMessage: e.readableMessage)),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -111,8 +107,9 @@ class _SessionsListState extends State<SessionsList> {
 class SessionsData extends DataTableSource {
   final List<Session> _data;
   final int totalCount;
+  final void Function(int)? onSessionDelete;
 
-  SessionsData(this._data, this.totalCount);
+  SessionsData(this._data, this.totalCount, {this.onSessionDelete});
 
   @override
   DataRow? getRow(int index) {
@@ -133,15 +130,13 @@ class SessionsData extends DataTableSource {
             text: 'View participants',
             height: 40,
             backgroundColor: Colors.blueGrey,
+            buttonType: ButtonType.secondary,
           ),
           const SizedBox(width: 10),
-          AppButton(
-            onPressed: () {},
-            text: Strings.delete,
-            backgroundColor: Colors.red,
-            width: 100,
-            height: 40,
-            buttonType: ButtonType.secondary,
+          IconButton(
+            onPressed: () => onSessionDelete?.call(_data[index].id),
+            color: Colors.red,
+            icon: const Icon(Icons.delete),
           ),
         ],
       )),

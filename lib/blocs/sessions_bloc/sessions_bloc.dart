@@ -28,5 +28,14 @@ class SessionsBloc
           .listen((event) => emit(event))
           .asFuture();
     });
+    on<_DeleteSession>((event, emit) async {
+      await apiCallsWrapper(
+              attendanceRepo.deleteSession(sessionId: event.sessionId))
+          .listen((event) => event.maybeWhen(
+                orElse: () => emit(const BlocsState.loading()),
+                data: (_) => add(const _Started()),
+              ))
+          .asFuture();
+    });
   }
 }

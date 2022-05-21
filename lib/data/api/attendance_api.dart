@@ -89,9 +89,8 @@ class AttendanceApi {
   //   return Project.fromJson(response.data);
   // }
 
-  // Future<Project?> deleteSession({required int projectId}) async {
-  //   await _dioClient.delete(Endpoint.project + projectId.toString());
-  //   return null;
-  // }
-
+  Future deleteSession({required int sessionId}) async {
+    await _dioClient.delete(Endpoint.sessions + sessionId.toString());
+    return null;
+  }
 }
