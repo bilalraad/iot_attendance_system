@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iot_attendance_system/app_router.gr.dart';
 import 'package:iot_attendance_system/blocs/create_session/create_session_cubit.dart';
+import 'package:iot_attendance_system/blocs/participants/participants_bloc.dart';
 import 'package:iot_attendance_system/blocs/sessions_bloc/sessions_bloc.dart';
 import 'package:iot_attendance_system/data/api/dio_client.dart';
 import 'package:iot_attendance_system/data/api/helper/network.dart';
@@ -52,6 +53,7 @@ Future<Widget> configureInjections(Widget child) async {
       BlocProvider(
           lazy: false, create: (context) => SessionsBloc(attendanceRepo)),
       BlocProvider(create: (_) => CreateSessionCubit(attendanceRepo)),
+      BlocProvider(create: (context) => ParticipantsBloc(attendanceRepo)),
     ],
     child: child,
   );

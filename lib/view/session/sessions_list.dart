@@ -11,7 +11,6 @@ import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
 import 'package:iot_attendance_system/view/widgets/error_widget.dart';
 import 'package:iot_attendance_system/utils/app_utils.dart';
-import 'package:iot_attendance_system/view/widgets/file_picker_widget.dart';
 
 int limit = 25;
 
@@ -35,68 +34,78 @@ class _SessionsListState extends State<SessionsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SessionsBloc, BlocsState<ResWithCount<Session>>>(
-      builder: (context, state) {
-        return Align(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-            child: state.whenOrNull(
-                data: (res) {
-                  return PaginatedDataTable(
-                    columns: const [
-                      DataColumn(label: Text(Strings.name)),
-                      DataColumn(label: Text(Strings.date)),
-                      DataColumn(label: Text(Strings.participants)),
-                      DataColumn(label: Text(Strings.actions)),
-                    ],
-                    actions: [
-                      AppButton(
-                          onPressed: () {
-                            AutoRouter.of(context).push(const PickExcelRoute());
+    return Scaffold(
+      body: BlocBuilder<SessionsBloc, BlocsState<ResWithCount<Session>>>(
+        builder: (context, state) {
+          return Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+              child: state.whenOrNull(
+                  data: (res) {
+                    return PaginatedDataTable(
+                      columns: const [
+                        DataColumn(label: Text(Strings.name)),
+                        DataColumn(label: Text(Strings.date)),
+                        DataColumn(label: Text(Strings.participants)),
+                        DataColumn(label: Text(Strings.actions)),
+                      ],
+                      actions: [
+                        AppButton(
+                            onPressed: () {
+                              AutoRouter.of(context)
+                                  .push(const PickExcelRoute());
+                            },
+                            icon: const Icon(Icons.add),
+                            text: Strings.createSession)
+                      ],
+                      header: const Text(Strings.sessions),
+                      source: SessionsData(res.results, res.count,
+                          //TODO: Show delete success message
+                          onSessionDelete: (id) =>
+                              _sessionsB.add(SessionsEvent.deleteSession(id)),
+                          onParticipantsImport: (id) {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return PickFileDialog(
+                                    onSubmit: (f) {
+                                      //TODO: Show upload success message
+                                      _sessionsB.add(
+                                          SessionsEvent.uploadParticipants(
+                                              id, f));
+                                    },
+                                  );
+                                });
                           },
-                          icon: const Icon(Icons.add),
-                          text: Strings.createSession)
-                    ],
-                    header: const Text(Strings.sessions),
-                    source: SessionsData(res.results, res.count,
-                        onSessionDelete: (id) =>
-                            _sessionsB.add(SessionsEvent.deleteSession(id)),
-                        onParticipantsImport: (id) {
-                          showDialog(
-                              context: context,
-                              builder: (_) {
-                                return PickFileDialog(
-                                  onSubmit: (f) {
-                                    _sessionsB.add(
-                                        SessionsEvent.uploadParticipants(
-                                            id, f));
-                                  },
-                                );
-                              });
-                        }),
-                    rowsPerPage: res.count > 0 ? res.results.length : 1,
-                    columnSpacing: MediaQuery.of(context).size.width / 7.5,
-                    dataRowHeight: 70,
-                    showCheckboxColumn: false,
-                    onPageChanged: (page) {
-                      final nextPageKey = (res.results.length) + limit;
-                      final isLastPage = nextPageKey >= res.count;
-                      _nextPageKey = nextPageKey;
-                      if (isLastPage) return;
-                      _sessionsB.add(SessionsEvent.loadSessions(nextPageKey));
-                    },
-                  );
-                },
-                loading: () =>
-                    const Center(child: CircularProgressIndicator.adaptive()),
-                failure: (e) => AppErrorWidget(
-                    onRefresh: () {
-                      _sessionsB.add(SessionsEvent.loadSessions(_nextPageKey));
-                    },
-                    errorMessage: e.readableMessage)),
-          ),
-        );
-      },
+                          onViewParticipants: (id) {
+                            AutoRouter.of(context)
+                                .push(ParticipantsListRoute(sessionId: id));
+                          }),
+                      rowsPerPage: res.count > 0 ? res.results.length : 1,
+                      columnSpacing: MediaQuery.of(context).size.width / 7.5,
+                      dataRowHeight: 70,
+                      showCheckboxColumn: false,
+                      onPageChanged: (page) {
+                        final nextPageKey = (res.results.length) + limit;
+                        final isLastPage = nextPageKey >= res.count;
+                        _nextPageKey = nextPageKey;
+                        if (isLastPage) return;
+                        _sessionsB.add(SessionsEvent.loadSessions(nextPageKey));
+                      },
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
+                  failure: (e) => AppErrorWidget(
+                      onRefresh: () {
+                        _sessionsB
+                            .add(SessionsEvent.loadSessions(_nextPageKey));
+                      },
+                      errorMessage: e.readableMessage)),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -106,9 +115,12 @@ class SessionsData extends DataTableSource {
   final int totalCount;
   final void Function(int)? onSessionDelete;
   final void Function(int)? onParticipantsImport;
+  final void Function(int)? onViewParticipants;
 
   SessionsData(this._data, this.totalCount,
-      {this.onSessionDelete, this.onParticipantsImport});
+      {this.onSessionDelete,
+      this.onParticipantsImport,
+      this.onViewParticipants});
 
   @override
   DataRow? getRow(int index) {
@@ -127,7 +139,7 @@ class SessionsData extends DataTableSource {
           ),
           const SizedBox(width: 10),
           AppButton(
-            onPressed: () {},
+            onPressed: () => onViewParticipants?.call(_data[index].id),
             text: 'View participants',
             height: 40,
             backgroundColor: Colors.blueGrey,

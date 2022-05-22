@@ -1,12 +1,17 @@
 class Strings {
   static const createSession = 'Create Session';
+  static const createParticipant = 'Add Participant';
+
   static const add = 'Add';
   static const save = 'Save';
   static const sessions = 'Sessions';
   static const name = 'Name';
   static const date = 'Date';
+  static const dateOfBirth = 'Date Of Birth';
   static const actions = 'Actions';
   static const participants = 'Participants';
+  static const participant = 'Participant';
+  static const attended = 'Attended';
   static const retry = 'Retry';
   static const delete = 'Delete';
   static const dropFilesHere = 'Drop Files Here';
@@ -15,6 +20,7 @@ class Strings {
   static const skipAndNext = 'Skip And Next';
   static const next = 'Next';
   static const back = 'Back';
+  static const finish = 'Finish';
   static const selectDate = "Select Date";
   static const import = "Import";
   static const title = 'Title';
@@ -25,14 +31,18 @@ class Strings {
   static const deleteSessionSuccess = 'Session Deleted successfully';
   static const noSessions = 'No Sessions';
   static const sessionEditSuccess = 'Session edited successfully';
+  static const phoneNumber = 'Phone number';
+  static const gender = 'Gender';
+  static const governorate = 'Governorate';
+  static const email = 'Email';
+  static const yes = 'Yes';
+  static const no = 'No';
 
   static const logIn = 'تسجيل الدخول';
   static const logOut = 'تسجيل الخروج';
   static const studentName = 'اسم الطالب';
   static const supervisorName = 'اسم المشرف';
-  static const level = 'المستوى الجامعي';
   static const keywords = 'الكلمات الدالة';
-  static const studentPhoneNumber = 'رقم هاتف الطالب';
   static const pdf = 'PDF';
   static const doc = 'DOC';
   static const abstract = 'نبذة مختصرة';
@@ -53,7 +63,6 @@ class Strings {
   static const urlError = "الرابط غير صالح";
   static const addAdmin = 'اضافة ادمن جديد';
   static const adminName = 'اسم الادمن';
-  static const email = 'البريد الالكتروني';
   static const password = 'كلمة السر';
   static const addAdminNote = 'ملاحظة: فقط السوبر ادمن يمكه اضافه ادمن جديد';
   static const adminAddedSuccess = 'تم اضافة ادمن جديد بنجاح';

@@ -18,3 +18,5 @@ enum Role {
 }
 
 enum PickerFileTypes { pdf, doc, docx, xlsx }
+
+enum InfoType { email, phone, id }

@@ -33,7 +33,7 @@ class AppBackButton extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: InkWell(
-            onTap: () => AutoRouter.of(context).replaceNamed('/'),
+            onTap: () => AutoRouter.of(context).replaceNamed('/dashboard'),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

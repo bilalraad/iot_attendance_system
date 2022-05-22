@@ -10,6 +10,7 @@ import 'package:iot_attendance_system/models/app_file.dart';
 import 'package:iot_attendance_system/models/create_session.dart';
 import 'package:iot_attendance_system/models/session.dart';
 import 'package:iot_attendance_system/utils/app_error.dart';
+import 'package:iot_attendance_system/utils/enums.dart';
 
 Stream<BlocsState<T>> apiCallsWrapper<T>(Future<T> action) async* {
   yield const BlocsState.loading();
@@ -81,16 +82,37 @@ class AttendanceApi {
   //       data: project.toJson().cleanUpValues());
   // }
 
-  // Future<Project?> getSession({
-  //   required int projectId,
-  // }) async {
-  //   final response =
-  //       await _dioClient.get(Endpoint.project + projectId.toString());
-  //   return Project.fromJson(response.data);
-  // }
+  Future<Session> getParticipants({
+    required int? sessionId,
+    int? skip,
+    int limit = 1000,
+  }) async {
+    final response = await _dioClient.get(Endpoint.participants,
+        queryParameters: {'session_id': sessionId, 'skip': skip, 'limit': limit}
+            .cleanUpValues());
+    return Session.fromJson(response.data);
+  }
 
   Future deleteSession({required int sessionId}) async {
     await _dioClient.delete(Endpoint.sessions + sessionId.toString());
+    return null;
+  }
+
+  Future deleteParticipant({required int participantId}) async {
+    await _dioClient.delete(Endpoint.participants + participantId.toString());
+    return null;
+  }
+
+  Future recordAttendance({
+    required String participantInfo,
+    required int sessionId,
+    InfoType type = InfoType.id,
+  }) async {
+    await _dioClient.post(Endpoint.recordAttendance, data: {
+      'info': participantInfo,
+      "session_id": sessionId,
+      'type': type.name
+    });
     return null;
   }
 }

@@ -162,7 +162,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                                   },
                                 );
                               },
-                              text: Strings.next,
+                              text: Strings.finish,
                             );
                           },
                         ),
