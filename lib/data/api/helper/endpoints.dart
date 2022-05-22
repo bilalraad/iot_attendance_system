@@ -6,7 +6,7 @@ class Endpoint {
   static const String participantsForm =
       '${dashboard}sessions/participants/form';
 
-  static const String importParticipants = 'sessions/import';
+  static const String importParticipants = '${dashboard}sessions/import';
   static const String participants = '${dashboard}participants/';
 
   static const String skip = 'skip';

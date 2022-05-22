@@ -54,13 +54,13 @@ class AttendanceApi {
     return ResWithCount.fromJson(response.data, Session.fromJsonModel);
   }
 
-  // Future participantsUpload(AppFile excelFile) async {
-  //   final formData = FormData.fromMap({
-  //     "file":
-  //         MultipartFile.fromBytes(excelFile.bytes, filename: excelFile.name),
-  //   });
-  //   await _dioClient.post(Endpoint.importProjects, data: formData);
-  // }
+  Future participantsUpload(int sessionId, AppFile excelFile) async {
+    final formData = FormData.fromMap({"session_id": sessionId});
+    formData.files.add(MapEntry('file',
+        MultipartFile.fromBytes(excelFile.bytes, filename: excelFile.name)));
+
+    await _dioClient.post(Endpoint.importParticipants, data: formData);
+  }
 
   Future<void> addSession({
     required CreateSession newSession,

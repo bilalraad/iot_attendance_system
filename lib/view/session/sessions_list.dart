@@ -1,32 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:intl/intl.dart';
 import 'package:iot_attendance_system/app_router.gr.dart';
 import 'package:iot_attendance_system/blocs/sessions_bloc/sessions_bloc.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
 import 'package:iot_attendance_system/models/session.dart';
+import 'package:iot_attendance_system/utils/pick_file_dialog.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
 import 'package:iot_attendance_system/view/widgets/error_widget.dart';
 import 'package:iot_attendance_system/utils/app_utils.dart';
+import 'package:iot_attendance_system/view/widgets/file_picker_widget.dart';
 
 int limit = 25;
-
-extension PagingUtils on PagingController {
-  void addItems<T>(ResWithCount<T> data, [int limitSize = 25]) {
-    final nextPageKey = (itemList?.length ?? 0) + limitSize;
-
-    final isLastPage = nextPageKey >= data.count;
-    if (isLastPage) {
-      appendLastPage(data.results);
-    } else {
-      appendPage(data.results, nextPageKey);
-    }
-  }
-}
 
 class SessionsList extends StatefulWidget {
   const SessionsList({Key? key}) : super(key: key);
@@ -71,12 +58,22 @@ class _SessionsListState extends State<SessionsList> {
                           text: Strings.createSession)
                     ],
                     header: const Text(Strings.sessions),
-                    source: SessionsData(
-                      res.results,
-                      res.count,
-                      onSessionDelete: (id) =>
-                          _sessionsB.add(SessionsEvent.deleteSession(id)),
-                    ),
+                    source: SessionsData(res.results, res.count,
+                        onSessionDelete: (id) =>
+                            _sessionsB.add(SessionsEvent.deleteSession(id)),
+                        onParticipantsImport: (id) {
+                          showDialog(
+                              context: context,
+                              builder: (_) {
+                                return PickFileDialog(
+                                  onSubmit: (f) {
+                                    _sessionsB.add(
+                                        SessionsEvent.uploadParticipants(
+                                            id, f));
+                                  },
+                                );
+                              });
+                        }),
                     rowsPerPage: res.count > 0 ? res.results.length : 1,
                     columnSpacing: MediaQuery.of(context).size.width / 7.5,
                     dataRowHeight: 70,
@@ -108,8 +105,10 @@ class SessionsData extends DataTableSource {
   final List<Session> _data;
   final int totalCount;
   final void Function(int)? onSessionDelete;
+  final void Function(int)? onParticipantsImport;
 
-  SessionsData(this._data, this.totalCount, {this.onSessionDelete});
+  SessionsData(this._data, this.totalCount,
+      {this.onSessionDelete, this.onParticipantsImport});
 
   @override
   DataRow? getRow(int index) {
@@ -120,7 +119,9 @@ class SessionsData extends DataTableSource {
       DataCell(Row(
         children: [
           AppButton(
-            onPressed: () {},
+            onPressed: _data[index].participantsCount == 0
+                ? () => onParticipantsImport?.call(_data[index].id)
+                : null,
             text: 'Import Participants',
             height: 40,
           ),

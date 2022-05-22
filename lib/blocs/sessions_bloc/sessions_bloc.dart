@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/data/api/attendance_api.dart';
 import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
+import 'package:iot_attendance_system/models/app_file.dart';
 import 'package:iot_attendance_system/models/session.dart';
 
 part 'sessions_event.dart';
@@ -32,8 +33,19 @@ class SessionsBloc
       await apiCallsWrapper(
               attendanceRepo.deleteSession(sessionId: event.sessionId))
           .listen((event) => event.maybeWhen(
-                orElse: () => emit(const BlocsState.loading()),
                 data: (_) => add(const _Started()),
+                failure: (e) => emit(BlocsState.failure(e)),
+                orElse: () => emit(const BlocsState.loading()),
+              ))
+          .asFuture();
+    });
+    on<_UploadParticipants>((event, emit) async {
+      await apiCallsWrapper(attendanceRepo.participantsUpload(
+              event.sessionId, event.excelFile))
+          .listen((event) => event.maybeWhen(
+                failure: (e) => emit(BlocsState.failure(e)),
+                data: (_) => add(const _Started()),
+                orElse: () => emit(const BlocsState.loading()),
               ))
           .asFuture();
     });

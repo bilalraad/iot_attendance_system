@@ -16,10 +16,18 @@ class Strings {
   static const next = 'Next';
   static const back = 'Back';
   static const selectDate = "Select Date";
+  static const import = "Import";
+  static const title = 'Title';
+  static const sessionCreatedSuccessFully = 'Session Created Successfully';
+  static const participantsUploadSuccess = 'Participants Loaded successfully';
+  static const editSession = 'Edit Session';
+  static const deleteSession = 'Delete Session';
+  static const deleteSessionSuccess = 'Session Deleted successfully';
+  static const noSessions = 'No Sessions';
+  static const sessionEditSuccess = 'Session edited successfully';
 
   static const logIn = 'تسجيل الدخول';
   static const logOut = 'تسجيل الخروج';
-  static const projectName = 'اسم المشروع';
   static const studentName = 'اسم الطالب';
   static const supervisorName = 'اسم المشرف';
   static const level = 'المستوى الجامعي';
@@ -29,8 +37,8 @@ class Strings {
   static const doc = 'DOC';
   static const abstract = 'نبذة مختصرة';
   static const optionalWithBrackets = ' ) اختياري ( ';
-  static const pleaseFillProjectInfo =
-      'الرجاء ملئ الحقول بالمعلومات الظرورية والتاكد منها قبل الاضافة';
+  // static const pleaseFillSessionInfo =
+  //     'الرجاء ملئ الحقول بالمعلومات الظرورية والتاكد منها قبل الاضافة';
   static const operationCanceled = 'تم الغاء العملية';
   static const unKnownError = 'حدث خطأ غير متوقع';
   static const connectionFailed = 'فشل في الاتصال الرجاء المحاولة لاحقا';
@@ -81,22 +89,16 @@ class Strings {
   static const changePassword = 'تغيير كلمة السر';
   static const pleaseUploadReport = 'الرجاء رفع تقرير المشروع';
   static const pleaseSelectYear = 'الرجاء اختيار سنة التخرج';
-  static const projectUploadSuccess = 'تم رفع المشروع بنجاح';
   static const pleaseUploadFile = 'الرجاء رفع الملف اولا';
-  static const projectsUploadSuccess = 'تم رفع المشاريع بنجاح';
-  static const projectEditeSuccess = 'تم تعديل المشروع بنجاح';
   static const noKeywords = 'لا يوجد كلمات دالة';
   static const noAbstract = 'لم يتم اضافة نبذة مختصرة';
   static const noReport = 'لم يتم رفع تقرير لهذا المشروع';
   static const finalReport = 'التقرير النهائي';
-  static const editProject = 'تعديل المشروع';
-  static const deleteProject = 'حذف المشروع';
-  static const deleteProjectSuccess = 'تم حذف المشروع بنجاح';
+
   static const showDetails = 'عرض التفاصيل';
   static const loading = 'تحميل...';
   static const filtering = 'فلترة';
   static const downloadData = 'تحميل البيانات';
-  static const noProjects = 'لا يوجد مشاريع';
   static const changeFilter = "تغيير الفلتر";
   static const keywordHint = 'مثال: تطبيق هاتف';
   static const filterReset = 'اعادة';
