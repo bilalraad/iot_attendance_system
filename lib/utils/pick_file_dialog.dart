@@ -12,7 +12,7 @@ class PickFileDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppFile? _pickedFile;
+    AppFile? pickedFile;
 
     return Dialog(
       child: StatefulBuilder(builder: (context, setState) {
@@ -24,25 +24,25 @@ class PickFileDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headline3,
             ),
             FilePickerWidget(
-                pickedFiles: _pickedFile != null ? [_pickedFile!] : [],
+                pickedFiles: pickedFile != null ? [pickedFile!] : [],
                 onFilesPicked: (f) {
                   setState(() {
-                    _pickedFile = f;
+                    pickedFile = f;
                   });
                 },
                 filesLimit: 1,
                 fileTypes: const [PickerFileTypes.xlsx],
                 onFileRemoved: (_) {
                   setState(() {
-                    _pickedFile = null;
+                    pickedFile = null;
                   });
                 }),
             AppButton(
-              onPressed: _pickedFile == null
+              onPressed: pickedFile == null
                   ? null
                   : () {
                       AutoRouter.of(context).pop();
-                      onSubmit(_pickedFile!);
+                      onSubmit(pickedFile!);
                     },
               text: Strings.import,
             ),

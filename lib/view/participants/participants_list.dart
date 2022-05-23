@@ -90,13 +90,13 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                 DataColumn(label: Text(Strings.actions)),
                               ],
                               actions: [
-                                AppButton(
+                                const AppButton(
                                     onPressed: null,
                                     //  () {
                                     // AutoRouter.of(context)
                                     //     .push(const PickExcelRoute());
                                     // },
-                                    icon: const Icon(Icons.add),
+                                    icon: Icon(Icons.add),
                                     text: Strings.createParticipant),
                                 AppButton(
                                     onPressed: () {

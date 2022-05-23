@@ -6,23 +6,12 @@ class MyHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SessionsList(),
-            ),
-          ),
-          Container(
-            width: 100,
-            color: Colors.white,
-            child: Column(
-              children: [],
-            ),
-          )
-        ],
+    return const Scaffold(
+      body: Expanded(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: SessionsList(),
+        ),
       ),
     );
   }
