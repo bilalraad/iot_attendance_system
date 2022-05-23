@@ -1,8 +1,8 @@
 class Strings {
   static const createSession = 'Create Session';
   static const createParticipant = 'Add Participant';
-
   static const add = 'Add';
+  static const submit = 'Submit';
   static const save = 'Save';
   static const sessions = 'Sessions';
   static const name = 'Name';
@@ -10,6 +10,7 @@ class Strings {
   static const dateOfBirth = 'Date Of Birth';
   static const actions = 'Actions';
   static const participants = 'Participants';
+  static const participantsForm = 'Participant Form';
   static const participant = 'Participant';
   static const attended = 'Attended';
   static const retry = 'Retry';
@@ -75,9 +76,9 @@ class Strings {
   static const mustLogOutWhenRestore =
       "يجب عليك تسجيل الدخول مرة اخرى بعد اتمام العملية";
   static const restore = 'استعادة';
-  static const downloadfiles = 'تحميل الملفات';
+  static const downloadFiles = 'تحميل الملفات';
   static const downloadSQL = 'تحميل قاعدة البيانات';
-  static const ifYouAdminPleaseConfrimIdentity =
+  static const ifYouAdminPleaseConfirmIdentity =
       'اذا كنت ادمن الرجاء اثبات هويتك عن طريق التسجيل';
   static const loggedInSuccess = 'تم تسجيل الدخول بنجاح';
   static const browseOnly = 'تصفح الموقع فقط';

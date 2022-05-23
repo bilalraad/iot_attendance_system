@@ -3,12 +3,10 @@ class Endpoint {
   static const String logIn = '/users/login';
   static const String sessions = '${dashboard}sessions/';
   static const String createSession = '${dashboard}sessions/create';
-  static const String participantsForm =
-      '${dashboard}sessions/participants/form';
-
+  static const String participantsForm = '${dashboard}participants/form/';
   static const String importParticipants = '${dashboard}sessions/import';
   static const String participants = '${dashboard}participants/';
-  static const String recordAttendance = '/participants/';
+  static const String recordAttendance = '/participants';
 
   static const String skip = 'skip';
   static const String limit = 'take';

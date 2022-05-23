@@ -3,47 +3,52 @@ import 'package:flutter/services.dart';
 
 class AppTextField extends StatelessWidget {
   final String? hintText;
-  final String lableText;
-  final IconData? icon;
+  final String labelText;
+  final IconData? prefixIcon;
+  final Widget? prefixWidget;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool obscureText;
+  final bool enabled;
   final List<TextInputFormatter>? inputFormatters;
   final int? minLines;
-  final Widget? suffixIcon;
+  final Widget? suffixWidget;
   final TextInputAction textInputAction;
   final ValueChanged<String>? onFieldSubmitted;
   final double? width;
   final TextAlign textAlign;
 
-  const AppTextField({
-    Key? key,
-    required this.lableText,
-    this.hintText,
-    this.inputFormatters,
-    this.icon,
-    this.initialValue,
-    this.onChanged,
-    this.validator,
-    this.controller,
-    this.suffixIcon,
-    this.minLines,
-    this.textInputAction = TextInputAction.done,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.onFieldSubmitted,
-    this.width,
-    this.textAlign = TextAlign.start,
-  }) : super(key: key);
+  const AppTextField(
+      {Key? key,
+      required this.labelText,
+      this.hintText,
+      this.inputFormatters,
+      this.prefixIcon,
+      this.initialValue,
+      this.onChanged,
+      this.validator,
+      this.controller,
+      this.suffixWidget,
+      this.minLines,
+      this.textInputAction = TextInputAction.done,
+      this.obscureText = false,
+      this.keyboardType = TextInputType.text,
+      this.onFieldSubmitted,
+      this.width,
+      this.textAlign = TextAlign.start,
+      this.enabled = true,
+      this.prefixWidget})
+      : assert(!(prefixIcon != null && prefixWidget != null)),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final inputDecoration = InputDecoration(
-      labelText: lableText,
-      icon: icon != null ? Icon(icon, size: 20) : null,
+      labelText: labelText,
+      icon: prefixIcon != null ? Icon(prefixIcon, size: 20) : prefixWidget,
       hintText: hintText,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -56,7 +61,8 @@ class AppTextField extends StatelessWidget {
         borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         borderRadius: BorderRadius.circular(10),
       ),
-      suffixIcon: suffixIcon,
+      enabled: enabled,
+      suffixIcon: suffixWidget,
     );
 
     return SizedBox(
@@ -64,6 +70,7 @@ class AppTextField extends StatelessWidget {
       child: TextFormField(
         validator: validator,
         controller: controller,
+        readOnly: !enabled,
         initialValue: initialValue,
         obscureText: obscureText,
         onChanged: onChanged,

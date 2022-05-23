@@ -1,16 +1,24 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iot_attendance_system/app_router.dart';
+import 'package:iot_attendance_system/app_router.gr.dart';
+import 'package:iot_attendance_system/blocs/cubit/participants_actions_cubit.dart';
 
 import 'package:iot_attendance_system/blocs/participants/participants_bloc.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
+import 'package:iot_attendance_system/data/api/helper/endpoints.dart';
 import 'package:iot_attendance_system/models/participant.dart';
 import 'package:iot_attendance_system/models/session.dart';
 import 'package:iot_attendance_system/utils/app_utils.dart';
+import 'package:iot_attendance_system/utils/context_extensions.dart';
+import 'package:iot_attendance_system/utils/enums.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
 import 'package:iot_attendance_system/view/widgets/app_header.dart';
 import 'package:iot_attendance_system/view/widgets/error_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 int limit = 25;
 
@@ -27,10 +35,13 @@ class ParticipantsListScreen extends StatefulWidget {
 
 class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
   late ParticipantsBloc _participantB;
+  late ParticipantsActionsCubit _participantsActionsC;
 
   @override
   void initState() {
     _participantB = ParticipantsBloc.of(context);
+    _participantsActionsC = BlocProvider.of<ParticipantsActionsCubit>(context);
+
     _participantB.add(ParticipantsEvent.loadParticipants(widget.sessionId));
     super.initState();
   }
@@ -86,19 +97,57 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                     //     .push(const PickExcelRoute());
                                     // },
                                     icon: const Icon(Icons.add),
-                                    text: Strings.createParticipant)
+                                    text: Strings.createParticipant),
+                                AppButton(
+                                    onPressed: () {
+                                      if (kIsWeb && !kDebugMode) {
+                                        launchUrl(Uri.parse(FRONT_URL +
+                                            Endpoint.participantsForm +
+                                            widget.sessionId.toString()));
+                                        return;
+                                      }
+                                      AutoRouter.of(context).push(
+                                          ParticipantsFormRoute(
+                                              sessionId:
+                                                  widget.sessionId.toString()));
+                                    },
+                                    icon: const Icon(
+                                        Icons.format_align_justify_rounded),
+                                    text: Strings.participantsForm)
                               ],
                               header: const Text(Strings.participants),
                               source: ParticipantsData(
                                 res.participants,
-                                //TODO: Show delete success message
-                                onParticipantDelete: (id) => _participantB.add(
-                                    ParticipantsEvent.deleteParticipant(
-                                        id, widget.sessionId)),
-                                //TODO: Show attendance recorded success message
-                                onRecordAttendance: (id) => _participantB.add(
-                                    ParticipantsEvent.recordAttendance(
-                                        id, widget.sessionId)),
+                                onParticipantDelete: (id) async {
+                                  await _participantsActionsC.deleteParticipant(
+                                      id, widget.sessionId);
+                                  _participantsActionsC.state.whenOrNull(
+                                    data: (_) {
+                                      context
+                                          .showSnackBar('Participant Deleted');
+                                      _participantB.reload(widget.sessionId);
+                                    },
+                                    failure: (e) => context.showSnackBar(
+                                        e.readableMessage,
+                                        isError: true),
+                                  );
+                                },
+                                onRecordAttendance: (id) async {
+                                  await _participantsActionsC.recordAttendance(
+                                      widget.sessionId,
+                                      id.toString(),
+                                      InfoType.id);
+                                  _participantsActionsC.state.whenOrNull(
+                                    data: (_) {
+                                      context
+                                          .showSnackBar('Attendance Recorded');
+                                      _participantB.reload(widget.sessionId);
+                                    },
+                                    failure: (e) => context.showSnackBar(
+                                        e.readableMessage,
+                                        isError: true),
+                                  );
+                                },
                               ),
                               rowsPerPage: res.participants.isNotEmpty
                                   ? (res.participants.length < limit

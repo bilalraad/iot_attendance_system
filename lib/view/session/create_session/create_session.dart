@@ -113,7 +113,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                       style: Theme.of(context).textTheme.headline3,
                     ),
                     AppTextField(
-                      lableText: 'Session Name',
+                      labelText: 'Session Name',
                       controller: _sessionNameC,
                       validator: ValidationBuilder().required().build(),
                     ),

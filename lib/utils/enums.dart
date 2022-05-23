@@ -9,13 +9,13 @@ enum Level {
 
 enum ReportFileType { pdf, word, unKnown }
 
-enum Role {
-  admin('ادمن'),
-  superAdmin('سوبر ادمن');
+// enum Role {
+//   admin('A'),
+//   superAdmin('سوبر ادمن');
 
-  final String translate;
-  const Role(this.translate);
-}
+//   final String translate;
+//   const Role(this.translate);
+// }
 
 enum PickerFileTypes { pdf, doc, docx, xlsx }
 
