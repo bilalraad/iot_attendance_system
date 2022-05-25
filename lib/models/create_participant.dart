@@ -9,7 +9,7 @@ part 'create_participant.g.dart';
 @freezed
 class CreateParticipant with _$CreateParticipant {
   factory CreateParticipant({
-    @JsonKey(name: 'session_id') required int? sessionId,
+    @JsonKey(name: 'session_id') required String? sessionId,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'date_of_birth') required DateTime? dateOfBirth,
     @JsonKey(name: 'email') required String email,
@@ -31,7 +31,7 @@ class CreateParticipant with _$CreateParticipant {
         dateOfBirth: null,
         educationalBackground: null,
         email: '',
-        gender: null,
+        gender: Gender.male,
         fieldOfStudy: null,
         governorate: '',
         nationality: '',

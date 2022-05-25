@@ -120,7 +120,7 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
                     const SizedBox(height: 10),
                     AppDatePicker(
                         selectedDate: _date,
-                        onYearSelected: (d) {
+                        onDateSelected: (d) {
                           setState(() => _date = d);
                         }),
                     const SizedBox(height: 10),

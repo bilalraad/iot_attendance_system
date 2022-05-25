@@ -81,19 +81,21 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                             child: PaginatedDataTable(
                               columns: const [
                                 DataColumn(label: Text(Strings.actions)),
+                                DataColumn(label: Text(Strings.attended)),
                                 DataColumn(label: Text(Strings.name)),
                                 DataColumn(label: Text(Strings.email)),
                                 DataColumn(label: Text(Strings.phoneNumber)),
                                 DataColumn(label: Text(Strings.gender)),
                                 DataColumn(label: Text(Strings.governorate)),
                                 DataColumn(label: Text(Strings.dateOfBirth)),
-                                DataColumn(label: Text(Strings.attended)),
                               ],
                               actions: [
                                 AppButton(
                                     onPressed: () {
-                                      // AutoRouter.of(context)
-                                      //     .push(const PickExcelRoute());
+                                      AutoRouter.of(context).push(
+                                          AddParticipantRoute(
+                                              sessionId:
+                                                  widget.sessionId.toString()));
                                     },
                                     icon: const Icon(Icons.add),
                                     text: Strings.createParticipant),
@@ -193,7 +195,9 @@ class ParticipantsData extends DataTableSource {
       DataCell(Row(
         children: [
           IconButton(
-            onPressed: () => onRecordAttendance?.call(_data[index].id),
+            onPressed: _data[index].attendance
+                ? null
+                : () => onRecordAttendance?.call(_data[index].id),
             color: Colors.green,
             tooltip: Strings.attended,
             icon: const Icon(Icons.check),
@@ -206,17 +210,17 @@ class ParticipantsData extends DataTableSource {
           ),
         ],
       )),
+      DataCell(Text(
+        _data[index].attendance ? Strings.yes : Strings.no,
+        style: TextStyle(
+            color: _data[index].attendance ? Colors.green : Colors.red),
+      )),
       DataCell(Text(_data[index].name)),
       DataCell(Text(_data[index].email)),
       DataCell(Text(_data[index].phone)),
       DataCell(Text(_data[index].gender.name)),
       DataCell(Text(_data[index].governorate)),
       DataCell(Text(_data[index].dateOfBirth.format()!)),
-      DataCell(Text(
-        _data[index].attendance ? Strings.yes : Strings.no,
-        style: TextStyle(
-            color: _data[index].attendance ? Colors.green : Colors.red),
-      )),
     ]);
   }
 

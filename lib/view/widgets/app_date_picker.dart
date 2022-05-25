@@ -6,11 +6,11 @@ class AppDatePicker extends StatelessWidget {
   const AppDatePicker({
     Key? key,
     required this.selectedDate,
-    required this.onYearSelected,
+    required this.onDateSelected,
   }) : super(key: key);
 
   final DateTime? selectedDate;
-  final Function(DateTime?) onYearSelected;
+  final Function(DateTime?) onDateSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class AppDatePicker extends StatelessWidget {
                 initialDate: selectedDate ?? DateTime.now(),
                 firstDate: DateTime(1800),
                 lastDate: DateTime(DateTime.now().year + 3))
-            .then(onYearSelected);
+            .then(onDateSelected);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
