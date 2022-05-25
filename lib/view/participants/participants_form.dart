@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iot_attendance_system/blocs/cubit/participants_actions_cubit.dart';
+import 'package:iot_attendance_system/blocs/participants_actions/participants_actions_cubit.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/utils/context_extensions.dart';
 import 'package:iot_attendance_system/utils/enums.dart';

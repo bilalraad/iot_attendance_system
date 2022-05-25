@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
 import 'package:iot_attendance_system/data/api/attendance_api.dart';
+import 'package:iot_attendance_system/models/create_participant.dart';
 import 'package:iot_attendance_system/utils/enums.dart';
 
 class ParticipantsActionsCubit extends Cubit<BlocsState<void>> {
@@ -30,9 +31,10 @@ class ParticipantsActionsCubit extends Cubit<BlocsState<void>> {
         .asFuture();
   }
 
-  // Future<void> createParticipant(int sessionId) async {
-  //   await apiCallsWrapper(_attendancesRepo.(participantId: participantId))
-  //       .listen((event) => emit(event))
-  //       .asFuture();
-  // }
+  Future<void> createParticipant(CreateParticipant newParticipant) async {
+    await apiCallsWrapper(
+            _attendancesRepo.addParticipant(newParticipant: newParticipant))
+        .listen((event) => emit(event))
+        .asFuture();
+  }
 }

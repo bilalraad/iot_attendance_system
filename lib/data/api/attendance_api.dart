@@ -7,6 +7,7 @@ import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
 // import 'package:iot_attendance_system/data/api/helper/token.dart';
 import 'package:iot_attendance_system/data/shared_pref_helper.dart';
 import 'package:iot_attendance_system/models/app_file.dart';
+import 'package:iot_attendance_system/models/create_participant.dart';
 import 'package:iot_attendance_system/models/create_session.dart';
 import 'package:iot_attendance_system/models/session.dart';
 import 'package:iot_attendance_system/utils/app_error.dart';
@@ -114,5 +115,12 @@ class AttendanceApi {
       'type': type.name
     });
     return null;
+  }
+
+  Future<void> addParticipant({
+    required CreateParticipant newParticipant,
+  }) async {
+    final formData = FormData.fromMap(newParticipant.toJson().cleanUpValues());
+    await _dioClient.post(Endpoint.participants, data: formData);
   }
 }

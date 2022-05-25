@@ -60,7 +60,7 @@ class AppRouter extends _i5.RootStackRouter {
         _i5.RouteConfig(PickExcelRoute.name,
             path: '/dashboard/sessions/create'),
         _i5.RouteConfig(ParticipantsFormRoute.name,
-            path: '/dashboard/sessions/participants/form/:id'),
+            path: '/dashboard/participants/form/:id'),
         _i5.RouteConfig(ParticipantsListRoute.name,
             path: '/dashboard/participants/:id'),
         _i5.RouteConfig('*#redirect',
@@ -93,7 +93,7 @@ class ParticipantsFormRoute
     extends _i5.PageRouteInfo<ParticipantsFormRouteArgs> {
   ParticipantsFormRoute({_i6.Key? key, required String sessionId})
       : super(ParticipantsFormRoute.name,
-            path: '/dashboard/sessions/participants/form/:id',
+            path: '/dashboard/participants/form/:id',
             args: ParticipantsFormRouteArgs(key: key, sessionId: sessionId),
             rawPathParams: {'id': sessionId});
 
