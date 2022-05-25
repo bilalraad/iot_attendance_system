@@ -44,10 +44,10 @@ class _SessionsListState extends State<SessionsList> {
                   data: (res) {
                     return PaginatedDataTable(
                       columns: const [
+                        DataColumn(label: Text(Strings.actions)),
                         DataColumn(label: Text(Strings.name)),
                         DataColumn(label: Text(Strings.date)),
                         DataColumn(label: Text(Strings.participants)),
-                        DataColumn(label: Text(Strings.actions)),
                       ],
                       actions: [
                         AppButton(
@@ -82,7 +82,7 @@ class _SessionsListState extends State<SessionsList> {
                                 .push(ParticipantsListRoute(sessionId: id));
                           }),
                       rowsPerPage: res.count > 0 ? res.results.length : 1,
-                      columnSpacing: MediaQuery.of(context).size.width / 7.5,
+                      columnSpacing: MediaQuery.of(context).size.width / 8.5,
                       dataRowHeight: 70,
                       showCheckboxColumn: false,
                       onPageChanged: (page) {
@@ -125,34 +125,35 @@ class SessionsData extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-      DataCell(Text(_data[index].name)),
-      DataCell(Text(_data[index].date.format()!)),
-      DataCell(Text(_data[index].participantsCount.toString())),
       DataCell(Row(
         children: [
-          AppButton(
-            onPressed: _data[index].participantsCount == 0
-                ? () => onParticipantsImport?.call(_data[index].id)
-                : null,
-            text: 'Import Participants',
-            height: 40,
-          ),
-          const SizedBox(width: 10),
-          AppButton(
-            onPressed: () => onViewParticipants?.call(_data[index].id),
-            text: 'View participants',
-            height: 40,
-            backgroundColor: Colors.blueGrey,
-            buttonType: ButtonType.secondary,
-          ),
-          const SizedBox(width: 10),
           IconButton(
             onPressed: () => onSessionDelete?.call(_data[index].id),
             color: Colors.red,
+            tooltip: 'Delete Session',
             icon: const Icon(Icons.delete),
+          ),
+          const SizedBox(width: 10),
+          IconButton(
+            onPressed: _data[index].participantsCount == 0
+                ? () => onParticipantsImport?.call(_data[index].id)
+                : null,
+            color: Colors.blue,
+            icon: const Icon(Icons.upload),
+            tooltip: 'Import Participants',
+          ),
+          IconButton(
+            onPressed: () => onViewParticipants?.call(_data[index].id),
+            color: Colors.yellow[800],
+            icon: const Icon(Icons.visibility_outlined),
+            tooltip: 'View participants',
           ),
         ],
       )),
+      DataCell(SelectableText(_data[index].name,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+      DataCell(SelectableText(_data[index].date.format()!)),
+      DataCell(SelectableText(_data[index].participantsCount.toString())),
     ]);
   }
 

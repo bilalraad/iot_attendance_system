@@ -7,11 +7,9 @@ class MyHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Expanded(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SessionsList(),
-        ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: SessionsList(),
       ),
     );
   }

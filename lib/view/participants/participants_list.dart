@@ -80,6 +80,7 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                           child: SingleChildScrollView(
                             child: PaginatedDataTable(
                               columns: const [
+                                DataColumn(label: Text(Strings.actions)),
                                 DataColumn(label: Text(Strings.name)),
                                 DataColumn(label: Text(Strings.email)),
                                 DataColumn(label: Text(Strings.phoneNumber)),
@@ -87,30 +88,30 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                 DataColumn(label: Text(Strings.governorate)),
                                 DataColumn(label: Text(Strings.dateOfBirth)),
                                 DataColumn(label: Text(Strings.attended)),
-                                DataColumn(label: Text(Strings.actions)),
                               ],
                               actions: [
-                                const AppButton(
-                                    onPressed: null,
-                                    //  () {
-                                    // AutoRouter.of(context)
-                                    //     .push(const PickExcelRoute());
-                                    // },
-                                    icon: Icon(Icons.add),
-                                    text: Strings.createParticipant),
                                 AppButton(
                                     onPressed: () {
-                                      if (kIsWeb && !kDebugMode) {
-                                        launchUrl(Uri.parse(FRONT_URL +
-                                            Endpoint.participantsForm +
-                                            widget.sessionId.toString()));
-                                        return;
-                                      }
-                                      AutoRouter.of(context).push(
-                                          ParticipantsFormRoute(
-                                              sessionId:
-                                                  widget.sessionId.toString()));
+                                      // AutoRouter.of(context)
+                                      //     .push(const PickExcelRoute());
                                     },
+                                    icon: const Icon(Icons.add),
+                                    text: Strings.createParticipant),
+                                AppButton(
+                                    onPressed: res.participants.isEmpty
+                                        ? null
+                                        : () {
+                                            if (kIsWeb && !kDebugMode) {
+                                              launchUrl(Uri.parse(FRONT_URL +
+                                                  Endpoint.participantsForm +
+                                                  widget.sessionId.toString()));
+                                              return;
+                                            }
+                                            AutoRouter.of(context).push(
+                                                ParticipantsFormRoute(
+                                                    sessionId: widget.sessionId
+                                                        .toString()));
+                                          },
                                     icon: const Icon(
                                         Icons.format_align_justify_rounded),
                                     text: Strings.participantsForm)
@@ -189,17 +190,6 @@ class ParticipantsData extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
-      DataCell(Text(_data[index].name)),
-      DataCell(Text(_data[index].email)),
-      DataCell(Text(_data[index].phone)),
-      DataCell(Text(_data[index].gender.name)),
-      DataCell(Text(_data[index].governorate)),
-      DataCell(Text(_data[index].dateOfBirth.format()!)),
-      DataCell(Text(
-        _data[index].attendance ? Strings.yes : Strings.no,
-        style: TextStyle(
-            color: _data[index].attendance ? Colors.green : Colors.red),
-      )),
       DataCell(Row(
         children: [
           IconButton(
@@ -215,6 +205,17 @@ class ParticipantsData extends DataTableSource {
             icon: const Icon(Icons.delete),
           ),
         ],
+      )),
+      DataCell(Text(_data[index].name)),
+      DataCell(Text(_data[index].email)),
+      DataCell(Text(_data[index].phone)),
+      DataCell(Text(_data[index].gender.name)),
+      DataCell(Text(_data[index].governorate)),
+      DataCell(Text(_data[index].dateOfBirth.format()!)),
+      DataCell(Text(
+        _data[index].attendance ? Strings.yes : Strings.no,
+        style: TextStyle(
+            color: _data[index].attendance ? Colors.green : Colors.red),
       )),
     ]);
   }
