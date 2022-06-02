@@ -1,6 +1,6 @@
 class Endpoint {
   static const String dashboard = '/dashboard/';
-  static const String logIn = '/users/login';
+  static const String logIn = '/login';
   static const String sessions = '${dashboard}sessions/';
   static const String createSession = '${dashboard}sessions/create';
   static const String participantsForm = '${dashboard}participants/form/';

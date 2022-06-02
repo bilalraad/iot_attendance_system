@@ -56,7 +56,7 @@ class SharedPreferenceHelper {
   //   return null;
   // }
 
-  Future removeUser() async => _sharedPreference.remove(Preferences.user);
+  // Future removeUser() async => _sharedPreference.remove(Preferences.user);
 
   // Future saveAppConfig(AppConfig value) => _sharedPreference.setString(
   //     Preferences.appConfig, json.encode(value.toJson()));

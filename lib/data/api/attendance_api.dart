@@ -4,6 +4,7 @@ import 'package:iot_attendance_system/data/api/dio_client.dart';
 import 'package:iot_attendance_system/data/api/helper/endpoints.dart';
 import 'package:iot_attendance_system/data/api/helper/map_utils.dart';
 import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
+import 'package:iot_attendance_system/data/api/helper/token.dart';
 // import 'package:iot_attendance_system/data/api/helper/token.dart';
 import 'package:iot_attendance_system/data/shared_pref_helper.dart';
 import 'package:iot_attendance_system/models/app_file.dart';
@@ -29,14 +30,22 @@ class AttendanceApi {
 
   const AttendanceApi(this._dioClient, this.sharedPreference);
 
-  // Future logIn({required String email, required String password}) async {
-  //   final response = await _dioClient
-  //       .post(Endpoint.logIn, data: {"email": email, "password": password});
+  Future logIn({required String email, required String password}) async {
+    final response = await _dioClient
+        .post(Endpoint.logIn, data: {"email": email, "password": password});
 
-  //   await sharedPreference
-  //       .saveAuthToken(Token(access: response.data['access_token']));
-  //   await sharedPreference.saveUser(User.fromJson(response.data['user']));
-  // }
+    await sharedPreference
+        .saveAuthToken(Token(access: response.data['access_token']));
+    // await sharedPreference.saveUser(User.fromJson(response.data['user']));
+  }
+
+  Future validateToken() async {
+    final response = await _dioClient.get('/user');
+
+    if (response.statusCode == 401) {
+      sharedPreference.removeAuthToken();
+    }
+  }
 
   Future<ResWithCount<Session>> getSessions({
     int? skip,

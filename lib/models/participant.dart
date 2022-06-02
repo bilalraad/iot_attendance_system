@@ -21,7 +21,7 @@ class Participant with _$Participant {
         required String? educationalBackground,
     @JsonKey(name: 'university') required String? university,
     @JsonKey(name: 'attendance') required bool attendance,
-    @JsonKey(name: 'session_id') required int sessionId,
+    // @JsonKey(name: 'session_id') required int sessionId,
   }) = _Participant;
 
   factory Participant.fromJson(Map<String, dynamic> json) =>

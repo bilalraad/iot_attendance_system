@@ -11,7 +11,7 @@ class Network {
   static Dio provideDio(SharedPreferenceHelper sharedPrefHelper) {
     final dio = Dio();
     dio
-      ..options.baseUrl = BASE_URL
+      ..options.baseUrl = Env.baseURL
       ..options.contentType = 'application/json; charset=utf-8'
       ..options.headers = {"Accept": "application/json"}
       ..interceptors.add(

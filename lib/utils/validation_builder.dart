@@ -155,8 +155,4 @@ class ValidationBuilder {
               _phoneRegExp.hasMatch(a2e(v).replaceAll(_nonDigitsExp, ''))
           ? null
           : message ?? Strings.phoneError);
-
-  /// Value must be a well formatted URL address
-  ValidationBuilder url([String? message]) =>
-      add((v) => _urlRegExp.hasMatch(v!) ? null : message ?? Strings.urlError);
 }

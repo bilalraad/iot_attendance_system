@@ -216,7 +216,7 @@ class ParticipantsData extends DataTableSource {
             color: _data[index].attendance ? Colors.green : Colors.red),
       )),
       DataCell(Text(_data[index].name)),
-      DataCell(Text(_data[index].email)),
+      DataCell(SelectableText(_data[index].email)),
       DataCell(Text(_data[index].phone)),
       DataCell(Text(_data[index].gender.name)),
       DataCell(Text(_data[index].governorate)),

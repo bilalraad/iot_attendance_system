@@ -11,7 +11,6 @@ class AppHeader extends StatelessWidget {
     return Center(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
-        constraints: const BoxConstraints(maxWidth: 1000),
         child: Column(
           children: [const AppBackButton(), Expanded(child: child)],
         ),
