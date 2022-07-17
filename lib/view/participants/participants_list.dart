@@ -13,6 +13,7 @@ import 'package:iot_attendance_system/models/participant.dart';
 import 'package:iot_attendance_system/models/session.dart';
 import 'package:iot_attendance_system/utils/app_utils.dart';
 import 'package:iot_attendance_system/utils/context_extensions.dart';
+import 'package:iot_attendance_system/utils/download.dart';
 import 'package:iot_attendance_system/utils/enums.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
@@ -90,6 +91,11 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                 DataColumn(label: Text(Strings.dateOfBirth)),
                               ],
                               actions: [
+                                AppButton(
+                                    onPressed: () =>
+                                        downLoadSessionExcel(res.id.toString()),
+                                    icon: const Icon(Icons.download),
+                                    text: Strings.downloadSessionExcel),
                                 AppButton(
                                     onPressed: () {
                                       AutoRouter.of(context).push(

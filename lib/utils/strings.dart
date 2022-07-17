@@ -53,6 +53,8 @@ class Strings {
   static const pdf = 'PDF';
   static const doc = 'DOC';
   static const optionalWithBrackets = ' ( Optional ) ';
+  static const downloadSessionExcel = 'Download Session Data';
+
   // static const pleaseFillSessionInfo =
   //     'الرجاء ملئ الحقول بالمعلومات الظرورية والتاكد منها قبل الاضافة';
   static const operationCanceled = 'Operation Canceled';
