@@ -81,7 +81,7 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                             child: PaginatedDataTable(
                               columns: const [
                                 DataColumn(label: Text(Strings.actions)),
-                                DataColumn(label: Text(Strings.status)),
+                                DataColumn(label: Text(Strings.attended)),
                                 DataColumn(label: Text(Strings.name)),
                                 DataColumn(label: Text(Strings.email)),
                                 DataColumn(label: Text(Strings.phoneNumber)),
