@@ -14,7 +14,15 @@ class Strings {
   static const participants = 'Participants';
   static const participantsForm = 'Participant Form';
   static const participant = 'Participant';
+  static const participantDeleted = 'Participant Deleted';
+  static const deleteParticipant = 'Deleted Participant';
+  static const recordAttendance = 'Record Attendance';
+  static const removeAttendance = 'Remove Attendance';
+  static const status = 'Status';
   static const attended = 'Attended';
+  static const notAttended = 'Not Attended';
+  static const attendanceRecorded = 'Attendance Recorded';
+  static const attendanceRemoved = 'Attendance Removed';
   static const retry = 'Retry';
   static const delete = 'Delete';
   static const dropFilesHere = 'Drop Files Here';

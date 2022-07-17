@@ -31,6 +31,16 @@ class ParticipantsActionsCubit extends Cubit<BlocsState<void>> {
         .asFuture();
   }
 
+  Future<void> removeAttendance(
+    int sessionId,
+    String participantId,
+  ) async {
+    await apiCallsWrapper(_attendancesRepo.removeAttendance(
+      sessionId: sessionId,
+      participantId: participantId,
+    )).listen((event) => emit(event)).asFuture();
+  }
+
   Future<void> createParticipant(CreateParticipant newParticipant) async {
     await apiCallsWrapper(
             _attendancesRepo.addParticipant(newParticipant: newParticipant))

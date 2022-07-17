@@ -81,7 +81,7 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                             child: PaginatedDataTable(
                               columns: const [
                                 DataColumn(label: Text(Strings.actions)),
-                                DataColumn(label: Text(Strings.attended)),
+                                DataColumn(label: Text(Strings.status)),
                                 DataColumn(label: Text(Strings.name)),
                                 DataColumn(label: Text(Strings.email)),
                                 DataColumn(label: Text(Strings.phoneNumber)),
@@ -119,39 +119,51 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                     text: Strings.participantsForm)
                               ],
                               header: const Text(Strings.participants),
-                              source: ParticipantsData(
-                                res.participants,
-                                onParticipantDelete: (id) async {
-                                  await _participantsActionsC.deleteParticipant(
-                                      id, widget.sessionId);
-                                  _participantsActionsC.state.whenOrNull(
-                                    data: (_) {
-                                      context
-                                          .showSnackBar('Participant Deleted');
-                                      _participantB.reload(widget.sessionId);
-                                    },
-                                    failure: (e) => context.showSnackBar(
-                                        e.readableMessage,
-                                        isError: true),
-                                  );
-                                },
-                                onRecordAttendance: (id) async {
-                                  await _participantsActionsC.recordAttendance(
-                                      widget.sessionId,
-                                      id.toString(),
-                                      InfoType.id);
-                                  _participantsActionsC.state.whenOrNull(
-                                    data: (_) {
-                                      context
-                                          .showSnackBar('Attendance Recorded');
-                                      _participantB.reload(widget.sessionId);
-                                    },
-                                    failure: (e) => context.showSnackBar(
-                                        e.readableMessage,
-                                        isError: true),
-                                  );
-                                },
-                              ),
+                              source: ParticipantsData(res.participants,
+                                  onParticipantDelete: (id) async {
+                                await _participantsActionsC.deleteParticipant(
+                                    id, widget.sessionId);
+                                _participantsActionsC.state.whenOrNull(
+                                  data: (_) {
+                                    context.showSnackBar(
+                                        Strings.participantDeleted);
+                                    _participantB.reload(widget.sessionId);
+                                  },
+                                  failure: (e) => context.showSnackBar(
+                                      e.readableMessage,
+                                      isError: true),
+                                );
+                              }, onRecordAttendance: (id) async {
+                                await _participantsActionsC.recordAttendance(
+                                    widget.sessionId,
+                                    id.toString(),
+                                    InfoType.id);
+                                _participantsActionsC.state.whenOrNull(
+                                  data: (_) {
+                                    context.showSnackBar(
+                                        Strings.attendanceRecorded);
+                                    _participantB.reload(widget.sessionId);
+                                  },
+                                  failure: (e) => context.showSnackBar(
+                                      e.readableMessage,
+                                      isError: true),
+                                );
+                              }, onRemoveAttendance: (id) async {
+                                await _participantsActionsC.removeAttendance(
+                                  widget.sessionId,
+                                  id.toString(),
+                                );
+                                _participantsActionsC.state.whenOrNull(
+                                  data: (_) {
+                                    context.showSnackBar(
+                                        Strings.attendanceRemoved);
+                                    _participantB.reload(widget.sessionId);
+                                  },
+                                  failure: (e) => context.showSnackBar(
+                                      e.readableMessage,
+                                      isError: true),
+                                );
+                              }),
                               rowsPerPage: res.participants.isNotEmpty
                                   ? (res.participants.length < limit
                                       ? res.participants.length
@@ -184,28 +196,46 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
 class ParticipantsData extends DataTableSource {
   final List<Participant> _data;
   final void Function(int)? onParticipantDelete;
+  final void Function(int)? onRemoveAttendance;
   final void Function(int)? onRecordAttendance;
 
-  ParticipantsData(this._data,
-      {this.onParticipantDelete, this.onRecordAttendance});
+  ParticipantsData(
+    this._data, {
+    this.onParticipantDelete,
+    this.onRecordAttendance,
+    required this.onRemoveAttendance,
+  });
 
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [
       DataCell(Row(
         children: [
-          IconButton(
-            onPressed: _data[index].attendance
-                ? null
-                : () => onRecordAttendance?.call(_data[index].id),
-            color: Colors.green,
-            tooltip: Strings.attended,
-            icon: const Icon(Icons.check),
+          SizedBox(
+            width: 150,
+            height: 50,
+            child: OutlinedButton(
+              onPressed: _data[index].attendance
+                  ? () => onRemoveAttendance?.call(_data[index].id)
+                  : () => onRecordAttendance?.call(_data[index].id),
+              // color: Colors.green,
+              style: OutlinedButton.styleFrom(
+                primary: !_data[index].attendance ? Colors.green : Colors.red,
+              ),
+              // tooltip: Strings.attended,
+              child: Text(
+                !_data[index].attendance
+                    ? Strings.recordAttendance
+                    : Strings.removeAttendance,
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
           const SizedBox(width: 10),
           IconButton(
             onPressed: () => onParticipantDelete?.call(_data[index].id),
             color: Colors.red,
+            tooltip: Strings.deleteParticipant,
             icon: const Icon(Icons.delete),
           ),
         ],
@@ -215,12 +245,12 @@ class ParticipantsData extends DataTableSource {
         style: TextStyle(
             color: _data[index].attendance ? Colors.green : Colors.red),
       )),
-      DataCell(Text(_data[index].name)),
+      DataCell(SelectableText(_data[index].name)),
       DataCell(SelectableText(_data[index].email)),
-      DataCell(Text(_data[index].phone)),
-      DataCell(Text(_data[index].gender.name)),
-      DataCell(Text(_data[index].governorate)),
-      DataCell(Text(_data[index].dateOfBirth.format()!)),
+      DataCell(SelectableText(_data[index].phone)),
+      DataCell(SelectableText(_data[index].gender.name)),
+      DataCell(SelectableText(_data[index].governorate)),
+      DataCell(SelectableText(_data[index].dateOfBirth.format()!)),
     ]);
   }
 

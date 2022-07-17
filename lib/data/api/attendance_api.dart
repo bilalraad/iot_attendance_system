@@ -126,6 +126,17 @@ class AttendanceApi {
     return null;
   }
 
+  Future removeAttendance({
+    required String participantId,
+    required int sessionId,
+  }) async {
+    await _dioClient.post(Endpoint.removeAttendance, data: {
+      'id': participantId,
+      "session_id": sessionId,
+    });
+    return null;
+  }
+
   Future<void> addParticipant({
     required CreateParticipant newParticipant,
   }) async {
