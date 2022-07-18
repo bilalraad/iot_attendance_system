@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_attendance_system/app_router.dart';
 import 'package:iot_attendance_system/app_router.gr.dart';
-
 import 'package:iot_attendance_system/blocs/participants/participants_bloc.dart';
 import 'package:iot_attendance_system/blocs/participants_actions/participants_actions_cubit.dart';
 import 'package:iot_attendance_system/blocs/states/result_state.dart';
@@ -92,20 +91,6 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                               ],
                               actions: [
                                 AppButton(
-                                    onPressed: () =>
-                                        downLoadSessionExcel(res.id.toString()),
-                                    icon: const Icon(Icons.download),
-                                    text: Strings.downloadSessionExcel),
-                                AppButton(
-                                    onPressed: () {
-                                      AutoRouter.of(context).push(
-                                          AddParticipantRoute(
-                                              sessionId:
-                                                  widget.sessionId.toString()));
-                                    },
-                                    icon: const Icon(Icons.add),
-                                    text: Strings.createParticipant),
-                                AppButton(
                                     onPressed: res.participants.isEmpty
                                         ? null
                                         : () {
@@ -122,7 +107,23 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                           },
                                     icon: const Icon(
                                         Icons.format_align_justify_rounded),
-                                    text: Strings.participantsForm)
+                                    text: Strings.participantsForm),
+                                AppButton(
+                                    onPressed: () =>
+                                        downLoadSessionExcel(res.id.toString()),
+                                    icon: const Icon(Icons.download),
+                                    backgroundColor: Colors.blueGrey,
+                                    text: Strings.downloadSessionExcel),
+                                AppButton(
+                                    onPressed: () {
+                                      AutoRouter.of(context).push(
+                                          AddParticipantRoute(
+                                              sessionId:
+                                                  widget.sessionId.toString()));
+                                    },
+                                    icon: const Icon(Icons.add),
+                                    backgroundColor: Colors.amber[900],
+                                    text: Strings.createParticipant),
                               ],
                               header: const Text(Strings.participants),
                               source: ParticipantsData(res.participants,

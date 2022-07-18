@@ -12,7 +12,7 @@ import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/utils/validation_builder.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
 import 'package:iot_attendance_system/view/widgets/app_header.dart';
-import 'package:iot_attendance_system/view/widgets/app_text_feild.dart';
+import 'package:iot_attendance_system/view/widgets/app_text_field.dart';
 import 'package:iot_attendance_system/view/widgets/file_picker_widget.dart';
 import 'package:iot_attendance_system/view/widgets/app_date_picker.dart';
 
@@ -45,133 +45,141 @@ class _PickExcelScreenState extends State<PickExcelScreen> {
     return Scaffold(
       body: Center(
         child: AppHeader(
-          child: PageView(
-            controller: pageC,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'Upload the participants excel file',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  FilePickerWidget(
-                      pickedFiles: _pickedFile != null ? [_pickedFile!] : [],
-                      onFilesPicked: (f) {
-                        setState(() {
-                          _pickedFile = f;
-                          _sessionNameC.text =
-                              extractSessionNameFromFileName(f.name) ?? '';
-                          _date = extractSessionDateFromFileName(f.name);
-                        });
-                      },
-                      filesLimit: 1,
-                      fileTypes: const [PickerFileTypes.xlsx],
-                      onFileRemoved: (_) {
-                        setState(() {
-                          _pickedFile = null;
-                          _sessionNameC.text = '';
-                          _date = null;
-                        });
-                      }),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppButton(
-                        onPressed: _pickedFile != null
-                            ? null
-                            : () {
-                                pageC.nextPage(
-                                    duration: pageTransDuration,
-                                    curve: pageCurve);
-                              },
-                        text: Strings.skipAndNext,
-                        buttonType: ButtonType.secondary,
-                      ),
-                      const SizedBox(width: 10),
-                      AppButton(
-                        onPressed: _pickedFile != null
-                            ? () {
-                                pageC.nextPage(
-                                    duration: pageTransDuration,
-                                    curve: pageCurve);
-                              }
-                            : null,
-                        text: Strings.next,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 650),
+            child: PageView(
+              controller: pageC,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Column(
                   children: [
-                    const SizedBox(height: 20),
                     Text(
-                      'Fill the remaining info',
+                      'Upload the participants excel file',
                       style: Theme.of(context).textTheme.headline3,
                     ),
-                    AppTextField(
-                      labelText: 'Session Name',
-                      controller: _sessionNameC,
-                      validator: ValidationBuilder().required().build(),
-                    ),
-                    const SizedBox(height: 10),
-                    AppDatePicker(
-                        selectedDate: _date,
-                        onDateSelected: (d) {
-                          setState(() => _date = d);
+                    FilePickerWidget(
+                        pickedFiles: _pickedFile != null ? [_pickedFile!] : [],
+                        onFilesPicked: (f) {
+                          setState(() {
+                            _pickedFile = f;
+                            _sessionNameC.text =
+                                extractSessionNameFromFileName(f.name) ?? '';
+                            _date = extractSessionDateFromFileName(f.name);
+                          });
+                        },
+                        filesLimit: 1,
+                        fileTypes: const [PickerFileTypes.xlsx],
+                        onFileRemoved: (_) {
+                          setState(() {
+                            _pickedFile = null;
+                            _sessionNameC.text = '';
+                            _date = null;
+                          });
                         }),
-                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppButton(
-                          onPressed: () {
-                            pageC.previousPage(
-                                duration: pageTransDuration, curve: pageCurve);
-                          },
-                          text: Strings.back,
+                          onPressed: _pickedFile != null
+                              ? null
+                              : () {
+                                  pageC.nextPage(
+                                      duration: pageTransDuration,
+                                      curve: pageCurve);
+                                },
+                          text: Strings.skipAndNext,
                           buttonType: ButtonType.secondary,
                         ),
                         const SizedBox(width: 10),
-                        BlocBuilder<CreateSessionCubit, BlocsState>(
-                          builder: (context, state) {
-                            return AppButton(
-                              isLoading: state.maybeWhen(
-                                  orElse: () => false, loading: () => true),
-                              onPressed: () async {
-                                if (!_formKey.currentState!.validate()) return;
-                                if (_date == null) {
-                                  context.showSnackBar(
-                                      'Please select session date',
-                                      isError: true);
+                        AppButton(
+                          onPressed: _pickedFile != null
+                              ? () {
+                                  pageC.nextPage(
+                                      duration: pageTransDuration,
+                                      curve: pageCurve);
                                 }
-
-                                await _createSessionC.submitSession(
-                                    CreateSession(
-                                        title: _sessionNameC.text, date: _date),
-                                    _pickedFile);
-                                _createSessionC.state.whenOrNull(
-                                  data: (_) {
-                                    context.showSnackBar(
-                                        'Session Created Successfully');
-                                    AutoRouter.of(context)
-                                        .replace(const MyHomeRoute());
-                                  },
-                                );
-                              },
-                              text: Strings.finish,
-                            );
-                          },
+                              : null,
+                          text: Strings.next,
                         ),
                       ],
                     )
                   ],
                 ),
-              ),
-            ],
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        'Fill the remaining info',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                      AppTextField(
+                        labelText: 'Session Name',
+                        controller: _sessionNameC,
+                        validator: ValidationBuilder().required().build(),
+                      ),
+                      const SizedBox(height: 10),
+                      AppDatePicker(
+                          selectedDate: _date,
+                          onDateSelected: (d) {
+                            setState(() => _date = d);
+                          }),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppButton(
+                            onPressed: () {
+                              pageC.previousPage(
+                                  duration: pageTransDuration,
+                                  curve: pageCurve);
+                            },
+                            text: Strings.back,
+                            buttonType: ButtonType.secondary,
+                          ),
+                          const SizedBox(width: 10),
+                          BlocBuilder<CreateSessionCubit, BlocsState>(
+                            builder: (context, state) {
+                              return AppButton(
+                                isLoading: state.maybeWhen(
+                                    orElse: () => false, loading: () => true),
+                                onPressed: () async {
+                                  if (!_formKey.currentState!.validate())
+                                    return;
+                                  if (_date == null) {
+                                    context.showSnackBar(
+                                        'Please select session date',
+                                        isError: true);
+                                  }
+
+                                  await _createSessionC.submitSession(
+                                      CreateSession(
+                                          title: _sessionNameC.text,
+                                          date: _date),
+                                      _pickedFile);
+                                  _createSessionC.state.whenOrNull(
+                                      data: (_) {
+                                        context.showSnackBar(
+                                            'Session Created Successfully');
+                                        AutoRouter.of(context)
+                                            .replace(const MyHomeRoute());
+                                      },
+                                      failure: ((error) => context.showSnackBar(
+                                          error.readableMessage,
+                                          isError: true)));
+                                },
+                                text: Strings.finish,
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

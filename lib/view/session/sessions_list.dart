@@ -82,60 +82,57 @@ class _SessionsListState extends State<SessionsList> {
               SingleChildScrollView(
                 child: state.whenOrNull(
                     data: (res) {
-                      return Expanded(
-                        child: PaginatedDataTable(
-                          columns: const [
-                            DataColumn(label: Text(Strings.actions)),
-                            DataColumn(label: Text(Strings.name)),
-                            DataColumn(label: Text(Strings.date)),
-                            DataColumn(label: Text(Strings.participants)),
-                          ],
-                          actions: [
-                            AppButton(
-                                onPressed: () {
-                                  AutoRouter.of(context)
-                                      .push(const PickExcelRoute());
-                                },
-                                icon: const Icon(Icons.add),
-                                text: Strings.createSession)
-                          ],
-                          header: const Text(Strings.sessions),
-                          source: SessionsData(res.results, res.count,
-                              //TODO: Show delete success message
-                              onSessionDelete: (id) => _sessionsB
-                                  .add(SessionsEvent.deleteSession(id)),
-                              onParticipantsImport: (id) {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return PickFileDialog(
-                                        onSubmit: (f) {
-                                          //TODO: Show upload success message
-                                          _sessionsB.add(
-                                              SessionsEvent.uploadParticipants(
-                                                  id, f));
-                                        },
-                                      );
-                                    });
-                              },
-                              onViewParticipants: (id) {
+                      return PaginatedDataTable(
+                        columns: const [
+                          DataColumn(label: Text(Strings.actions)),
+                          DataColumn(label: Text(Strings.name)),
+                          DataColumn(label: Text(Strings.date)),
+                          DataColumn(label: Text(Strings.participants)),
+                        ],
+                        actions: [
+                          AppButton(
+                              onPressed: () {
                                 AutoRouter.of(context)
-                                    .push(ParticipantsListRoute(sessionId: id));
-                              }),
-                          rowsPerPage: res.count > 0 ? res.results.length : 1,
-                          columnSpacing:
-                              MediaQuery.of(context).size.width / 8.5,
-                          dataRowHeight: 70,
-                          showCheckboxColumn: false,
-                          onPageChanged: (page) {
-                            final nextPageKey = (res.results.length) + limit;
-                            final isLastPage = nextPageKey >= res.count;
-                            _nextPageKey = nextPageKey;
-                            if (isLastPage) return;
-                            _sessionsB
-                                .add(SessionsEvent.loadSessions(nextPageKey));
-                          },
-                        ),
+                                    .push(const PickExcelRoute());
+                              },
+                              icon: const Icon(Icons.add),
+                              text: Strings.createSession)
+                        ],
+                        header: const Text(Strings.sessions),
+                        source: SessionsData(res.results, res.count,
+                            //TODO: Show delete success message
+                            onSessionDelete: (id) =>
+                                _sessionsB.add(SessionsEvent.deleteSession(id)),
+                            onParticipantsImport: (id) {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return PickFileDialog(
+                                      onSubmit: (f) {
+                                        //TODO: Show upload success message
+                                        _sessionsB.add(
+                                            SessionsEvent.uploadParticipants(
+                                                id, f));
+                                      },
+                                    );
+                                  });
+                            },
+                            onViewParticipants: (id) {
+                              AutoRouter.of(context)
+                                  .push(ParticipantsListRoute(sessionId: id));
+                            }),
+                        rowsPerPage: res.count > 0 ? res.results.length : 1,
+                        columnSpacing: MediaQuery.of(context).size.width / 8.5,
+                        dataRowHeight: 70,
+                        showCheckboxColumn: false,
+                        onPageChanged: (page) {
+                          final nextPageKey = (res.results.length) + limit;
+                          final isLastPage = nextPageKey >= res.count;
+                          _nextPageKey = nextPageKey;
+                          if (isLastPage) return;
+                          _sessionsB
+                              .add(SessionsEvent.loadSessions(nextPageKey));
+                        },
                       );
                     },
                     loading: () => const Center(

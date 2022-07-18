@@ -7,7 +7,7 @@ import 'package:iot_attendance_system/blocs/users/users_cubit.dart';
 import 'package:iot_attendance_system/utils/context_extensions.dart';
 import 'package:iot_attendance_system/utils/strings.dart';
 import 'package:iot_attendance_system/view/widgets/app_button.dart';
-import 'package:iot_attendance_system/view/widgets/app_text_feild.dart';
+import 'package:iot_attendance_system/view/widgets/app_text_field.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key, this.onResult}) : super(key: key);
