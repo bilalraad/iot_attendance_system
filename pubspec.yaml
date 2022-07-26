@@ -1,5 +1,5 @@
 name: iot_attendance_system
-description: A new Flutter project.
+description: An Attendance system for iot.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -34,7 +34,6 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
   bloc: ^8.0.3
   shared_preferences: ^2.0.15
   dio: ^4.0.4
@@ -51,6 +50,7 @@ dependencies:
       ref: 5c753a6e0ad8eb3d826894b5b149b5f43e8325f4
   intl: ^0.17.0
   path: ^1.8.1
+  url_strategy: ^0.2.0
 
 dev_dependencies:
   flutter_test:
