@@ -11,7 +11,7 @@ import 'package:iot_attendance_system/view/session/create_session/create_session
 import 'app_router.gr.dart';
 
 // ignore: constant_identifier_names
-const FRONT_URL = "https://attendance.iotmaker.org/web/#";
+const FRONT_URL = "https://attendance.iotmaker.org/web/index.html#";
 
 @MaterialAutoRouter(replaceInRouteName: 'Screen,Route', routes: <AutoRoute>[
   AutoRoute(

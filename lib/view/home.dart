@@ -19,9 +19,12 @@ class SideBarItem extends StatelessWidget {
   final Icon icon;
   final String? title;
   final VoidCallback onPressed;
-  const SideBarItem(
-      {Key? key, required this.icon, this.title, required this.onPressed})
-      : super(key: key);
+  const SideBarItem({
+    Key? key,
+    required this.icon,
+    this.title,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

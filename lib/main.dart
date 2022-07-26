@@ -20,16 +20,16 @@ import 'package:iot_attendance_system/data/shared_pref_helper.dart';
 import 'package:iot_attendance_system/utils/app_utils.dart';
 import 'package:iot_attendance_system/utils/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // setPathUrlStrategy();
+
   final app = await configureInjections(const MyApp());
   runZonedGuarded(
-    () {
-      runApp(app);
-    },
-    (error, stack) {
-      log(error.toString());
-    },
+    () => runApp(app),
+    (error, stack) => log(error.toString()),
   );
 }
 
