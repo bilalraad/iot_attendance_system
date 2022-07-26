@@ -5,7 +5,6 @@ import 'package:iot_attendance_system/data/api/helper/endpoints.dart';
 import 'package:iot_attendance_system/data/api/helper/map_utils.dart';
 import 'package:iot_attendance_system/data/api/helper/res_with_count.dart';
 import 'package:iot_attendance_system/data/api/helper/token.dart';
-// import 'package:iot_attendance_system/data/api/helper/token.dart';
 import 'package:iot_attendance_system/data/shared_pref_helper.dart';
 import 'package:iot_attendance_system/models/app_file.dart';
 import 'package:iot_attendance_system/models/create_participant.dart';
@@ -36,7 +35,6 @@ class AttendanceApi {
 
     await sharedPreference
         .saveAuthToken(Token(access: response.data['access_token']));
-    // await sharedPreference.saveUser(User.fromJson(response.data['user']));
   }
 
   Future validateToken() async {
@@ -98,8 +96,11 @@ class AttendanceApi {
     int limit = 1000,
   }) async {
     final response = await _dioClient.get(Endpoint.participants,
-        queryParameters: {'session_id': sessionId, 'skip': skip, 'limit': limit}
-            .cleanUpValues());
+        queryParameters: {
+          'session_id': sessionId,
+          Endpoint.skip: skip,
+          Endpoint.limit: limit,
+        }.cleanUpValues());
     return Session.fromJson(response.data);
   }
 
