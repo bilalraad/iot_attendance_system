@@ -105,7 +105,7 @@ class AttendanceApi {
   }
 
   Future deleteSession({required int sessionId}) async {
-    await _dioClient.delete(Endpoint.sessions + sessionId.toString());
+    await _dioClient.delete("${Endpoint.sessions}/$sessionId");
     return null;
   }
 
