@@ -20,7 +20,8 @@ class Participant with _$Participant {
     @JsonKey(name: 'educational_background')
         required String? educationalBackground,
     @JsonKey(name: 'university') required String? university,
-    @JsonKey(name: 'attendance') required bool attendance,
+    @JsonKey(name: 'attendance', fromJson: boolFromJson)
+        required bool attendance,
     // @JsonKey(name: 'session_id') required int sessionId,
   }) = _Participant;
 
@@ -35,4 +36,14 @@ enum Gender {
   male,
   @JsonValue('Female')
   female
+}
+
+// support for either 1 and 0 or true and false
+bool boolFromJson(dynamic data) {
+  if (data is int) {
+    if (data == 1) return true;
+    return false;
+  }
+  if (data is bool) return data;
+  return false;
 }
