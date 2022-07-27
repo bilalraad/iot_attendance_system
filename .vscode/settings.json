@@ -3,6 +3,7 @@
     "Cupertino",
     "dotenv",
     "Kufi",
+    "Laravel",
     "noto"
   ],
   "cSpell.ignoreRegExpList": [
